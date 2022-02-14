@@ -89,7 +89,7 @@ function vis(x, y, width, height) {
   }
   translate(width/2, height/2)
   rotate(map(sin(frameCount/25)*maxAmp, -100, 100, TWO_PI, 0))
-  
+
   let rad = map(maxAmp, 0, 100, 16, height/2 - 8) + random(-2, 2)
   let sides = tones.length + 3
   stroke(0)
@@ -105,7 +105,7 @@ function keyTyped() {
       whitePressed[whiteKeys.indexOf(key)] = true
     }
   }
-  
+
   for (let i in blackTones) {
     if (key == blackKeys[i]) {
       addTone(blackTones[i])
@@ -135,10 +135,10 @@ function addTone(freq) {
       toneExists = true
     }
   }
-  
+
   if (!toneExists) {
     let tone = new p5.Oscillator()
-    tone.freq(freq) 
+    tone.freq(freq)
     tones.push({t: tone, l: 100})
   }
 }
@@ -151,26 +151,26 @@ function handleTones() {
     if (tone.l == 100 & !tone.t.started) {
       tone.t.start()
     }
-    
-    let amp = map(tone.l, 0, 100, 0, 1)
+
+    let amp = map(tone.l, 0, 100, 0, 0.1)
     tone.t.amp(amp)
-    
+
     if (tone.l <= 0) {
       tone.t.stop()
     }
-    
+
     // is tone black or white
-    let blackIndex = blackTones.indexOf(tone.t.f) 
+    let blackIndex = blackTones.indexOf(tone.t.f)
     let whiteIndex = whiteTones.indexOf(tone.t.f)
-    
+
     let isPressed = blackPressed[blackIndex] | whitePressed[whiteIndex]
     if (!isPressed) {
       let reduce = round(map(tone.l, 0, 100, 3, 1))
       tone.l -= reduce;
     }
-  
+
   }
-  
+
   for (let i in tones) {
     if (!tones[i].t.started) {
       tones.splice(i, 1)
